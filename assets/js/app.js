@@ -20,7 +20,6 @@ import $ from "jquery";
 import game_init from "./starter-game";
 
 $(() => {
-  let root = $('#root')[0];
-  game_init(root);
+    let root = $('#root')[0];
+    game_init(root);
 });
-
