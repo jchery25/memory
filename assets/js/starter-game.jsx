@@ -6,92 +6,178 @@ export default function game_init(root) {
   ReactDOM.render(<Starter />, root);
 }
 
-const tiles = ["A","B","C","D","E","F","G","H","A","B","C","D","E","F","G","H"];
+let intialLetters = [{
+  tile: "A",
+  show: false,
+  isDisabled: false
+},{
+  tile: "B",
+  show: false,
+  isDisabled: false
+},{
+  tile: "C",
+  show: false,
+  isDisabled: false
+},{
+  tile: "D",
+  show: false,
+  isDisabled: false
+},{
+  tile: "E",
+  show: false,
+  isDisabled: false
+},{
+  tile: "F",
+  show: false,
+  isDisabled: false
+},{
+  tile: "G",
+  show: false,
+  isDisabled: false
+},{
+  tile: "H",
+  show: false,
+  isDisabled: false
+},{
+  tile: "A",
+  show: false,
+  isDisabled: false
+},{
+  tile: "B",
+  show: false,
+  isDisabled: false
+},{
+  tile: "C",
+  show: false,
+  isDisabled: false
+},{
+  tile: "D",
+  show: false,
+  isDisabled: false
+},{
+  tile: "E",
+  show: false,
+  isDisabled: false
+},{
+  tile: "F",
+  show: false,
+  isDisabled: false
+},{
+  tile: "G",
+  show: false,
+  isDisabled: false
+},{
+  tile: "H",
+  show: false,
+  isDisabled: false
+}]
 
-/**
- * Shuffles an array.
- * Reference: https://javascript.info/task/shuffle
- */
-function shuffle() {
-  tiles.sort(() => Math.random() - 0.5);
-}
 
 class Starter extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      isGameRestarted: false,
+      tiles: intialLetters,
+      guesses: 0,
+      highestScore: 0,
+      tilesToCompare: [],
     };
-     shuffle();
+    this.shuffle();
   }
-  
-  displays_tiles(){
-    // shuffle()
-    return tiles.map((tile,index) => {
-      return (
-            <button 
-                id={index}
-                className="button button-outline tiles"                
-                key={index}
-                onClick={()=> {
-                  if(_.isEmpty(document.getElementById(index).innerHTML)){
-                    document.getElementById(index).innerHTML = tile;
-                  } else {
-                    document.getElementById(index).innerHTML = "";
-                  }
-                }}
-                type="button">
-                  {undefined}
-            </button>
-        
-      )
+
+  /**
+   * Shuffles an array.
+   * Reference: https://javascript.info/task/shuffle
+   */
+  shuffle() {
+    intialLetters = intialLetters.sort(() => Math.random() - 0.5)
+  }
+
+  restart() {
+    this.shuffle();
+    this.setState({
+      tiles: intialLetters,
+      highestScore: this.state.guesses,
+      tilesToCompare: [],
+      guesses: 0
     })
   }
 
-  // swap(_ev) {
-  //    let state1 = _.assign({}, this.state, { left: !this.state.left });
-  //   this.setState(state1);
-  // }
+  compareChoices(choiceOne,choiceTwo){
+    if(choiceOne.tile == choiceTwo.tile){
+      setTimeout(()=>{
+        let newTiles = this.state.tiles.filter(tile => (tile.tile != choiceOne.tile));
 
-  // hax(_ev) {
-  //   alert("hax!");
-  // }
+        this.state.tiles = newTiles;
+        this.state.guesses++;
+      }, 100)
+
+      } else {
+        this.state.guesses++;
+        this.setState({
+          guesses: this.state.guesses
+        })
+    }
+
+    setTimeout(() => {
+      choiceOne.show = false;
+      choiceOne.isDisabled = false;
+
+      choiceTwo.show = false;
+      choiceTwo.isDisabled = false;
+
+      this.setState({
+        tilesToCompare: [],
+      })
+    }, 1000)
+  }
+  
+  displays_tiles(){ 
+    return this.state.tiles.map((tile,index) => { 
+        return (
+          <button key={index}
+                  id={index}
+                  disabled = {tile.isDisabled}
+                  className="button button-outline tiles"
+                  onClick={()=>{
+                    if(this.state.tilesToCompare.length < 2){
+                      this.state.tilesToCompare.push(tile);
+                      
+                      tile.show = !tile.show;
+                      tile.isDisabled = true;
+                    }
+
+                    if(this.state.tilesToCompare.length === 2){
+                      this.compareChoices(this.state.tilesToCompare[0],this.state.tilesToCompare[1]);
+                    } 
+
+                    
+
+                    this.setState({
+                      tiles: this.state.tiles,
+                    }) 
+                  
+                  }}> {tile.show ? tile.tile : null} </button>
+        )
+    })
+  }
+
+
 
   render() {
-    // let button = <div className="column" onMouseMove={this.swap.bind(this)}>
-    //   <p><button onClick={this.hax.bind(this)}>Click Me</button></p>
-    // </div>;
-
-    // let blank = <div className="column">
-    //   <p>Nothing here.</p>
-    // </div>;
-
-    // if (this.state.left) {
-    //   return <div className="row">
-    //     {button}
-    //     {blank}
-    //   </div>;
-    // }
-    // else {
-    //   return <div className="row">
-    //     {blank}
-    //     {button}
-    //   </div>;
-    // }
-    if(this.state.isGameRestarted){
-     
-      // Restart gameboard
-      // Restart the score (amount of clicks)
-      // Randomize cards
-      // Restart timer
-    } else {
       return (
-        <div id="grid" >
-          {this.displays_tiles()}
-        </div>
+        <div className="game_layout">
+            <p>Guesses: {this.state.guesses} | Highest Score: {this.state.highestScore}</p>  
 
+            <div id="grid" >
+              {this.displays_tiles()}
+            </div>
+
+            <div className="game_board">
+              <button className="button" onClick={this.restart.bind(this)}>Reset Game</button>
+            </div>
+        </div>
       )
     }
-  }
 }
 
