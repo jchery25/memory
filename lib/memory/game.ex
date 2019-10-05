@@ -14,7 +14,8 @@ defmodule Memory.Game do
   end
 
   def skeleton(tiles) do
-    get_in(tiles, [Access.all()])
+    tiles = get_in(tiles, [Access.all()])
+    tiles
     # IO.inspect(get_in(tiles, [Access.all(), :tile]), label: "This is a test")
     # Enum.map tiles, fn tile ->
     #  tile
@@ -25,8 +26,7 @@ defmodule Memory.Game do
    newTiles = get_and_update_in(game.tiles, [Access.at(key), :show], fn show ->
       {show, !show}
     end)
-
-    IO.inspect(newTiles, label: "Testing")
+    elem(newTiles, 1)
   end
 
   def initial_tiles do

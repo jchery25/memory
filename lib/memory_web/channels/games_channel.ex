@@ -22,10 +22,10 @@ defmodule MemoryWeb.GamesChannel do
   # end
 
   def handle_in("showTile", %{"key" => k}, socket) do
-    IO.inspect(socket)
     game = Game.showTile(socket.assigns[:game], k)
-    IO.inspect(game)
+    IO.inspect(game, label: "Game")
     socket = assign(socket, :game, game)
+    IO.inspect(socket, label: "Socket")
     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
   end
 

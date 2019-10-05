@@ -1,0 +1,42 @@
+Please fill in answers to the questions below:
+
+
+1. What's your name?
+	Jonathan Chery
+
+
+
+2. What's the URL of the github repo with your work for this HW?
+
+	https://github.com/jchery25/memory
+
+
+3. What's the URL that you deployed to?
+	http://memory2.mrjonchery.com/
+
+
+
+4. Is your game functionality complete, with the appropriate logic implemented
+as server-side elixir code? If not, what's missing?
+	No, it is not completed. 
+	1. User input is sent to the server via websocket.
+	2. The server sends the state back to the client via websocket.
+
+
+5. Is your game properly deployed? If not, what went wrong?
+	Yes, it is.
+
+
+
+
+
+
+And here's a list of tasks for grading comments. Just leave this here:
+ - Development
+ - Deployment
+ - Submission
+ - AA
+ - BB
+ - CC
+
+
